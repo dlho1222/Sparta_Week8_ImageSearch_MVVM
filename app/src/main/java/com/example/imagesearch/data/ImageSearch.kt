@@ -1,6 +1,6 @@
 package com.example.imagesearch.data
 
 data class ImageSearch(
-    val documents: List<Document>,
+    val documents: MutableList<Document>,
     val meta: Meta
 )

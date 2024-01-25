@@ -6,6 +6,7 @@ data class Document(
     val collection: String,
     @SerializedName("datetime")
     val datetime: String,
+    @SerializedName("display_sitename")
     val display_sitename: String,
     val doc_url: String,
     val height: Int,
