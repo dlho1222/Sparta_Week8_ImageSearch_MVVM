@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv_Thumb"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/mise1" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/iv_Like"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/heart"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="15dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_Source"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/iv_Thumb"
+        app:layout_constraintStart_toStartOf="@id/iv_Thumb"
+        app:layout_constraintTop_toBottomOf="@id/iv_Thumb"
+        tools:text="Daum카페" />
+
+    <TextView
+        android:id="@+id/tv_Date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/iv_Thumb"
+        app:layout_constraintStart_toStartOf="@id/iv_Thumb"
+        app:layout_constraintTop_toBottomOf="@id/tv_Source"
+        tools:text="2024-01-21 22:50:57" />
+</androidx.constraintlayout.widget.ConstraintLayout>
