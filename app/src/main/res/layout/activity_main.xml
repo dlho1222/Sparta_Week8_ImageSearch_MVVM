@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".activity.MainActivity">
 
     <View
         android:id="@+id/searchBackGround"
@@ -48,7 +48,7 @@
         android:layout_height="0dp"
         android:id="@+id/container"
         android:layout_margin="16dp"
-        app:layout_constraintBottom_toTopOf="@id/btn_SearchImage"
+        app:layout_constraintBottom_toTopOf="@id/btn_SearchImagePage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/searchBackGround"
@@ -57,7 +57,7 @@
 
 
     <Button
-        android:id="@+id/btn_SearchImage"
+        android:id="@+id/btn_SearchImagePage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
@@ -65,18 +65,18 @@
         android:layout_marginBottom="10dp"
         android:text="이미지 검색"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/btn_myLocker"
+        app:layout_constraintEnd_toStartOf="@id/btn_myLockerPage"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/btn_myLocker"
+        android:id="@+id/btn_myLockerPage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
         android:text="내 보관함"
-        app:layout_constraintBottom_toBottomOf="@id/btn_SearchImage"
+        app:layout_constraintBottom_toBottomOf="@id/btn_SearchImagePage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/btn_SearchImage"
-        app:layout_constraintTop_toTopOf="@id/btn_SearchImage" />
+        app:layout_constraintStart_toEndOf="@id/btn_SearchImagePage"
+        app:layout_constraintTop_toTopOf="@id/btn_SearchImagePage" />
 </androidx.constraintlayout.widget.ConstraintLayout>
