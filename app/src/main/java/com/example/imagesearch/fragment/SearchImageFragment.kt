@@ -9,13 +9,14 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.imagesearch.adapter.ImageAdapter
 import com.example.imagesearch.data.Document
 import com.example.imagesearch.databinding.FragmentSearchImageBinding
+import com.example.imagesearch.listener.ImageClickListener
 import com.example.imagesearch.retrofit.RetrofitInstance
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class SearchImageFragment : Fragment() {
+class SearchImageFragment : Fragment(), ImageClickListener {
     private var _binding: FragmentSearchImageBinding? = null
     private val binding get() = _binding!!
     private var items = mutableListOf<Document>()
@@ -44,9 +45,10 @@ class SearchImageFragment : Fragment() {
             }
         }
     }
-    private fun initRecyclerView(){
+
+    private fun initRecyclerView() {
         binding.recyclerView.apply {
-            imageAdapter = ImageAdapter(items, context)
+            imageAdapter = ImageAdapter(items, context, this@SearchImageFragment)
             adapter = imageAdapter
             layoutManager = GridLayoutManager(context, 2)
         }
@@ -55,5 +57,10 @@ class SearchImageFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    override fun onClickImage(document: Document) {
+        document.isLike = !document.isLike
+        imageAdapter.notifyDataSetChanged()
     }
 }
