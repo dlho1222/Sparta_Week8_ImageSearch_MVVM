@@ -1,6 +1,7 @@
 package com.example.imagesearch.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -15,11 +16,19 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class ImageAdapter(
-    private val items: MutableList<Document>,
     private val context: Context,
     private val listener: ImageClickListener? = null
 ) :
-    ListAdapter<Document, ImageAdapter.ImageViewHolder>(DocumentDiffCallback) {
+    ListAdapter<Document, ImageAdapter.ImageViewHolder>(object : DiffUtil.ItemCallback<Document>() {
+        override fun areItemsTheSame(oldItem: Document, newItem: Document): Boolean {
+            Log.i("TAG", "areItemsTheSame: ${oldItem.isLike} == ${newItem.isLike}")
+            return oldItem.isLike == newItem.isLike
+        }
+
+        override fun areContentsTheSame(oldItem: Document, newItem: Document): Boolean {
+            return oldItem == newItem
+        }
+    }) {
     inner class ImageViewHolder(private val binding: ItemImageBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(document: Document) {
@@ -29,34 +38,20 @@ class ImageAdapter(
             val outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
             val outputDateString = inputDateTime.format(outputFormatter)
             with(binding) {
-                tvSource.text = document.display_sitename
+                tvSource.text = document.displaySiteName
                 tvDate.text = outputDateString.toString()
+
                 Glide.with(context)
-                    .load(document.thumbnail_url)
+                    .load(document.thumbnailUrl)
                     .into(ivThumb)
                 ivLike.isVisible = document.isLike
+
                 ivThumb.setOnClickListener {
                     listener?.onClickImage(document)
-
-//                    document.isLike = !document.isLike
-//                    ivLike.isVisible = document.isLike
                 }
             }
         }
     }
-
-    companion object {
-        val DocumentDiffCallback = object : DiffUtil.ItemCallback<Document>() {
-            override fun areItemsTheSame(oldItem: Document, newItem: Document): Boolean {
-                return oldItem === newItem
-            }
-
-            override fun areContentsTheSame(oldItem: Document, newItem: Document): Boolean {
-                return oldItem == newItem
-            }
-        }
-    }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
         val inflater =
@@ -65,10 +60,10 @@ class ImageAdapter(
         return ImageViewHolder(binding)
     }
 
-    override fun getItemCount() = items.size
+    override fun getItemCount() = currentList.size
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        val documents = items[position]
+        val documents = currentList[position]
         holder.bind(documents)
     }
 }

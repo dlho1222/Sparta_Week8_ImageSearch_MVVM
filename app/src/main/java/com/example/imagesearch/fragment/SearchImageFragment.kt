@@ -1,9 +1,12 @@
 package com.example.imagesearch.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.imagesearch.adapter.ImageAdapter
@@ -35,22 +38,26 @@ class SearchImageFragment : Fragment(), ImageClickListener {
         with(binding) {
             btnSearch.setOnClickListener {
                 val query = etSearch.text.toString()
+                if (query.isEmpty()) return@setOnClickListener
+                //Api 연결 시 IO 으로 연결 하고, Ui갱신은 withContext로 Main에서 처리
                 CoroutineScope(Dispatchers.IO).launch {
                     val responseData = RetrofitInstance.imageSearchApi.getImage(query = query)
-                    items = responseData.documents
+                    items.addAll(responseData.documents)
                     withContext(Dispatchers.Main) {
                         initRecyclerView()
                     }
                 }
+                downKeyBoard(requireContext(), etSearch)
             }
         }
     }
 
     private fun initRecyclerView() {
         binding.recyclerView.apply {
-            imageAdapter = ImageAdapter(items, context, this@SearchImageFragment)
+            imageAdapter = ImageAdapter(context, this@SearchImageFragment)
             adapter = imageAdapter
             layoutManager = GridLayoutManager(context, 2)
+            imageAdapter.submitList(items)
         }
     }
 
@@ -61,6 +68,14 @@ class SearchImageFragment : Fragment(), ImageClickListener {
 
     override fun onClickImage(document: Document) {
         document.isLike = !document.isLike
+        //imageAdapter.submitList(items)
         imageAdapter.notifyDataSetChanged()
+    }
+    //키보드 내리기
+    private fun downKeyBoard(context: Context, editText: EditText) {
+        val inputMethodManager =
+            context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        editText.clearFocus()
+        inputMethodManager.hideSoftInputFromWindow(editText.windowToken, 0)
     }
 }

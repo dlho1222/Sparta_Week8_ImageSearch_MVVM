@@ -7,12 +7,12 @@ data class Document(
     @SerializedName("datetime")
     val datetime: String,
     @SerializedName("display_sitename")
-    val display_sitename: String,
+    val displaySiteName: String,
     val doc_url: String,
     val height: Int,
     val image_url: String,
     @SerializedName("thumbnail_url")
-    val thumbnail_url: String,
+    val thumbnailUrl: String,
     val width: Int,
     var isLike: Boolean = false
 )
