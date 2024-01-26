@@ -13,5 +13,6 @@ data class Document(
     val image_url: String,
     @SerializedName("thumbnail_url")
     val thumbnail_url: String,
-    val width: Int
+    val width: Int,
+    var isLike: Boolean = false
 )

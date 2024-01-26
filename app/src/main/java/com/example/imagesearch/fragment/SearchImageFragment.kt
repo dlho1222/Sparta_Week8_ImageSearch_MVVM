@@ -1,7 +1,6 @@
 package com.example.imagesearch.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +19,7 @@ class SearchImageFragment : Fragment() {
     private var _binding: FragmentSearchImageBinding? = null
     private val binding get() = _binding!!
     private var items = mutableListOf<Document>()
-    private val imageAdapter by lazy { context?.let { ImageAdapter(items, it) } }
+    private lateinit var imageAdapter: ImageAdapter
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -38,16 +37,18 @@ class SearchImageFragment : Fragment() {
                 CoroutineScope(Dispatchers.IO).launch {
                     val responseData = RetrofitInstance.imageSearchApi.getImage(query = query)
                     items = responseData.documents
-                    withContext(Dispatchers.Main){
-                        recyclerView.apply {
-                            adapter = imageAdapter
-                            layoutManager = GridLayoutManager(context,2)
-                        }
+                    withContext(Dispatchers.Main) {
+                        initRecyclerView()
                     }
-
-                    Log.i("TAG", "$responseData")
                 }
             }
+        }
+    }
+    private fun initRecyclerView(){
+        binding.recyclerView.apply {
+            imageAdapter = ImageAdapter(items, context)
+            adapter = imageAdapter
+            layoutManager = GridLayoutManager(context, 2)
         }
     }
 
