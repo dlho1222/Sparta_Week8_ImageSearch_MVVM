@@ -73,8 +73,10 @@ class SearchImageFragment : Fragment(), ImageClickListener {
         _binding = null
     }
 
+    //이미지 클릭시 좋아요 표시
     override fun onClickImage(document: Document) {
         DocumentsManager.toggleLike(document)
+        //imageAdapter.submitList(DocumentsManager.getDocument())
         imageAdapter.notifyDataSetChanged()
     }
 

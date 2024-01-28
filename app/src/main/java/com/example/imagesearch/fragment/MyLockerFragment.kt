@@ -53,4 +53,9 @@ class MyLockerFragment : Fragment(), ImageClickListener {
         val likeContents = DocumentsManager.getLikeContents()
         imageAdapter.submitList(likeContents)
     }
+
+    override fun onResume() {
+        super.onResume()
+        initRecyclerView()
+    }
 }
