@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.imagesearch.adapter.ImageAdapter
@@ -38,11 +39,11 @@ class SearchImageFragment : Fragment(), ImageClickListener {
         with(binding) {
             btnSearch.setOnClickListener {
                 val query = etSearch.text.toString()
+                saveData(query)
                 if (query.isEmpty()) return@setOnClickListener
                 //Api 연결 시 IO 으로 연결 하고, Ui갱신은 withContext로 Main에서 처리
                 CoroutineScope(Dispatchers.IO).launch {
                     val responseData = RetrofitInstance.imageSearchApi.getImage(query = query)
-                    //items.addAll(responseData.documents)
                     DocumentsManager.addDocument(responseData.documents)
                     withContext(Dispatchers.Main) {
                         initRecyclerView()
@@ -78,5 +79,28 @@ class SearchImageFragment : Fragment(), ImageClickListener {
             context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         editText.clearFocus()
         inputMethodManager.hideSoftInputFromWindow(editText.windowToken, 0)
+    }
+
+    private fun saveData(keyWord: String) {
+        activity?.getSharedPreferences(SEARCH_WORD, Context.MODE_PRIVATE)?.edit {
+            putString(KEYWORD, keyWord)
+            apply()
+        }
+    }
+
+    private fun getData() {
+        val saveKeyWord = activity?.getSharedPreferences(SEARCH_WORD, Context.MODE_PRIVATE)
+        binding.etSearch.setText(saveKeyWord?.getString(KEYWORD, ""))
+    }
+
+    override fun onResume() {
+        getData()
+        initRecyclerView()
+        super.onResume()
+    }
+
+    companion object {
+        private const val SEARCH_WORD = "searchWord"
+        private const val KEYWORD = "keyWord"
     }
 }
