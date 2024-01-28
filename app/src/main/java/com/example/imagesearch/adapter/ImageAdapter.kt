@@ -1,7 +1,6 @@
 package com.example.imagesearch.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -17,12 +16,13 @@ import java.time.format.DateTimeFormatter
 
 class ImageAdapter(
     private val context: Context,
-    private val listener: ImageClickListener? = null
+    private val listener: ImageClickListener? = null,
+    private val likeContents: MutableList<Document>? = null
 ) :
     ListAdapter<Document, ImageAdapter.ImageViewHolder>(object : DiffUtil.ItemCallback<Document>() {
         override fun areItemsTheSame(oldItem: Document, newItem: Document): Boolean {
-            Log.i("TAG", "areItemsTheSame: ${oldItem.isLike} == ${newItem.isLike}")
-            return oldItem.isLike == newItem.isLike
+            //Log.i("TAG", "areItemsTheSame: ${oldItem.isLike} == ${newItem.isLike}")
+            return oldItem === newItem
         }
 
         override fun areContentsTheSame(oldItem: Document, newItem: Document): Boolean {
@@ -37,6 +37,7 @@ class ImageAdapter(
                 LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
             val outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
             val outputDateString = inputDateTime.format(outputFormatter)
+
             with(binding) {
                 tvSource.text = document.displaySiteName
                 tvDate.text = outputDateString.toString()
@@ -44,11 +45,13 @@ class ImageAdapter(
                 Glide.with(context)
                     .load(document.thumbnailUrl)
                     .into(ivThumb)
-                ivLike.isVisible = document.isLike
+
+                ivLike.isVisible = document.isLike //상태에 따라 하트 표시
 
                 ivThumb.setOnClickListener {
                     listener?.onClickImage(document)
                 }
+
             }
         }
     }

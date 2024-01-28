@@ -13,6 +13,7 @@ import com.example.imagesearch.adapter.ImageAdapter
 import com.example.imagesearch.data.Document
 import com.example.imagesearch.databinding.FragmentSearchImageBinding
 import com.example.imagesearch.listener.ImageClickListener
+import com.example.imagesearch.manager.DocumentsManager
 import com.example.imagesearch.retrofit.RetrofitInstance
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +23,6 @@ import kotlinx.coroutines.withContext
 class SearchImageFragment : Fragment(), ImageClickListener {
     private var _binding: FragmentSearchImageBinding? = null
     private val binding get() = _binding!!
-    private var items = mutableListOf<Document>()
     private lateinit var imageAdapter: ImageAdapter
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,7 +42,8 @@ class SearchImageFragment : Fragment(), ImageClickListener {
                 //Api 연결 시 IO 으로 연결 하고, Ui갱신은 withContext로 Main에서 처리
                 CoroutineScope(Dispatchers.IO).launch {
                     val responseData = RetrofitInstance.imageSearchApi.getImage(query = query)
-                    items.addAll(responseData.documents)
+                    //items.addAll(responseData.documents)
+                    DocumentsManager.addDocument(responseData.documents)
                     withContext(Dispatchers.Main) {
                         initRecyclerView()
                     }
@@ -57,7 +58,7 @@ class SearchImageFragment : Fragment(), ImageClickListener {
             imageAdapter = ImageAdapter(context, this@SearchImageFragment)
             adapter = imageAdapter
             layoutManager = GridLayoutManager(context, 2)
-            imageAdapter.submitList(items)
+            imageAdapter.submitList(DocumentsManager.getDocument())
         }
     }
 
@@ -67,10 +68,10 @@ class SearchImageFragment : Fragment(), ImageClickListener {
     }
 
     override fun onClickImage(document: Document) {
-        document.isLike = !document.isLike
-        //imageAdapter.submitList(items)
+        DocumentsManager.toggleLike(document)
         imageAdapter.notifyDataSetChanged()
     }
+
     //키보드 내리기
     private fun downKeyBoard(context: Context, editText: EditText) {
         val inputMethodManager =
