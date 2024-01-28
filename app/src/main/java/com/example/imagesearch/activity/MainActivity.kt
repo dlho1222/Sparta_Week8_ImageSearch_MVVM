@@ -10,18 +10,20 @@ import com.example.imagesearch.fragment.SearchImageFragment
 
 class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+    private val searchImageFragment by lazy{SearchImageFragment()}
+    private val myLockerFragment by lazy { MyLockerFragment() }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        setFragment(SearchImageFragment())
+        setFragment(searchImageFragment)
 
         with(binding) {
             btnSearchImagePage.setOnClickListener {
-                setFragment(SearchImageFragment())
+                setFragment(searchImageFragment)
             }
             btnMyLockerPage.setOnClickListener {
-                setFragment(MyLockerFragment())
+                setFragment(myLockerFragment)
             }
         }
     }

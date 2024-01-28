@@ -16,6 +16,7 @@ class MyLockerFragment : Fragment(), ImageClickListener {
     private var _binding: FragmentMyLockerBinding? = null
     private val binding get() = _binding!!
     private lateinit var imageAdapter: ImageAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

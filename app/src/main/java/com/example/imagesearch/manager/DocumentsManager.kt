@@ -4,9 +4,8 @@ import com.example.imagesearch.data.Document
 
 object DocumentsManager {
     private val items by lazy { mutableListOf<Document>() }
-
     fun addDocument(document: MutableList<Document>) {
-        items.addAll(document)
+        items.addAll(0,document)
     }
 
     fun getDocument(): MutableList<Document> {

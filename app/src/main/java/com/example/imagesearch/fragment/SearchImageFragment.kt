@@ -39,9 +39,10 @@ class SearchImageFragment : Fragment(), ImageClickListener {
         with(binding) {
             btnSearch.setOnClickListener {
                 val query = etSearch.text.toString()
-                saveData(query)//검색어 저장
                 if (query.isEmpty()) return@setOnClickListener
-                //Api 연결 시 IO 으로 연결 하고, Ui갱신은 withContext로 Main에서 처리
+                saveData(query)//검색어 저장
+
+                //Api 연결 시 IO 으로 연결 하고, UI갱신은 withContext로 Main에서 처리
                 CoroutineScope(Dispatchers.IO).launch {
                     val responseData = RetrofitInstance.imageSearchApi.getImage(query = query)
                     DocumentsManager.addDocument(responseData.documents)
@@ -49,6 +50,7 @@ class SearchImageFragment : Fragment(), ImageClickListener {
                         initRecyclerView()
                     }
                 }
+
                 downKeyBoard(requireContext(), etSearch)
             }
         }
@@ -59,7 +61,10 @@ class SearchImageFragment : Fragment(), ImageClickListener {
             imageAdapter = ImageAdapter(context, this@SearchImageFragment)
             adapter = imageAdapter
             layoutManager = GridLayoutManager(context, 2)
-            imageAdapter.submitList(DocumentsManager.getDocument())
+            //검색 결과 80개 표시
+            val searchList = DocumentsManager.getDocument()
+            val sublist = if (searchList.size > 80) searchList.subList(0, 80) else searchList
+            imageAdapter.submitList(sublist)
         }
     }
 
@@ -81,6 +86,7 @@ class SearchImageFragment : Fragment(), ImageClickListener {
         inputMethodManager.hideSoftInputFromWindow(editText.windowToken, 0)
     }
 
+    //검색어 저장
     private fun saveData(keyWord: String) {
         activity?.getSharedPreferences(SEARCH_WORD, Context.MODE_PRIVATE)?.edit {
             putString(KEYWORD, keyWord)
@@ -88,6 +94,7 @@ class SearchImageFragment : Fragment(), ImageClickListener {
         }
     }
 
+    //저장된 검색어 가져오기
     private fun getData() {
         val saveKeyWord = activity?.getSharedPreferences(SEARCH_WORD, Context.MODE_PRIVATE)
         binding.etSearch.setText(saveKeyWord?.getString(KEYWORD, ""))

@@ -45,7 +45,7 @@ class ImageAdapter(
                 Glide.with(context)
                     .load(document.thumbnailUrl)
                     .into(ivThumb)
-                //상태에 따라 하트 표시 // 내 보관함 컨텐츠에는 좋아요 표시 x
+                //상태에 따라 하트 표시 // 내 보관함 컨텐츠에는 좋아요 표시 x 
                 if (likeContents == null) ivLike.isVisible = document.isLike
                 
                 ivThumb.setOnClickListener {
