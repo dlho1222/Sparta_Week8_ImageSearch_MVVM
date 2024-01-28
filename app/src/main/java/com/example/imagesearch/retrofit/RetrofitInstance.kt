@@ -1,7 +1,5 @@
 package com.example.imagesearch.retrofit
 
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -12,11 +10,7 @@ object RetrofitInstance {
             .Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(
-                OkHttpClient.Builder().addInterceptor(HttpLoggingInterceptor().apply {
-                    level = HttpLoggingInterceptor.Level.BODY
-                }).build()
-            ).build()
+            .build()
     }
     val imageSearchApi: ImageSearchApi by lazy {
         retrofit.create(ImageSearchApi::class.java)
