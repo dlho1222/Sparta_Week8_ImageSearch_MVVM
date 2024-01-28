@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:background="@color/backGroundColor"
         app:itemIconSize="30dp"
-        app:itemTextAppearanceInactive="@style/bottomNaviTextStyle"
+        app:itemTextAppearanceActive="@style/bottomNaviTextStyle"
         app:itemTextColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/menu_bottom_bar" />
