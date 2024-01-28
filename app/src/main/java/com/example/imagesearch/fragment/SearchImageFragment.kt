@@ -39,7 +39,7 @@ class SearchImageFragment : Fragment(), ImageClickListener {
         with(binding) {
             btnSearch.setOnClickListener {
                 val query = etSearch.text.toString()
-                saveData(query)
+                saveData(query)//검색어 저장
                 if (query.isEmpty()) return@setOnClickListener
                 //Api 연결 시 IO 으로 연결 하고, Ui갱신은 withContext로 Main에서 처리
                 CoroutineScope(Dispatchers.IO).launch {
