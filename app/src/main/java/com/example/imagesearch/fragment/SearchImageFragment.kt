@@ -74,10 +74,9 @@ class SearchImageFragment : Fragment(), ImageClickListener {
     }
 
     //이미지 클릭시 좋아요 표시
-    override fun onClickImage(document: Document) {
+    override fun onClickImage(document: Document, position: Int) {
         DocumentsManager.toggleLike(document)
-        //imageAdapter.submitList(DocumentsManager.getDocument())
-        imageAdapter.notifyDataSetChanged()
+        imageAdapter.notifyItemChanged(position)
     }
 
     //키보드 내리기

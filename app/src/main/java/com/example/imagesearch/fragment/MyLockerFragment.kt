@@ -48,7 +48,7 @@ class MyLockerFragment : Fragment(), ImageClickListener {
     }
 
     //이미지 클릭시 토글
-    override fun onClickImage(document: Document) {
+    override fun onClickImage(document: Document, position: Int) {
         DocumentsManager.toggleLike(document)
         val likeContents = DocumentsManager.getLikeContents()
         imageAdapter.submitList(likeContents)
